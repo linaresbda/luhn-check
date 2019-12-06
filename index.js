@@ -9,4 +9,4 @@ function luhnCheck(numCard) {
   return sum % 10 === 0;
 }
 
-module.export = luhnCheck;
+module.exports = luhnCheck;
