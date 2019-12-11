@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 /*
  * JavaScript implementation of the Luhn algorithm, with calculation and validation functions
  * https://simplycalc.com/luhn-source.php
@@ -35,4 +37,16 @@ function luhn_validate(fullcode) {
   return luhn_checksum(fullcode) == 0
 }
 
-module.exports = { luhn_validate, luhn_calculate, luhn_checksum };
+async function info_card(numbercard) {
+  let firsts6DigitsCard = numbercard.toString().substring(0, 6);
+  let endpoint = `https://lookup.binlist.net/${firsts6DigitsCard}`;
+  let response = await axios.get(endpoint).catch(err => console.log(err));
+  if (response) {
+    let { data: { scheme: procesador, type: tipo, bank: {name: banco}  } } = response;
+    return { procesador, tipo, banco };
+  } else {
+    return {};
+  }
+}
+
+module.exports = { luhn_validate, luhn_calculate, luhn_checksum, info_card };
